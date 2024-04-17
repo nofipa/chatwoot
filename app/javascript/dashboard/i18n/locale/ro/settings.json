@@ -83,7 +83,10 @@
         "CONVERSATION_CREATION": "Trimite notificări prin e-mail atunci când o conversație nouă este creată",
         "CONVERSATION_MENTION": "Trimiterea notificărilor prin e-mail atunci când sunteți menționat într-o conversație",
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Trimiterea notificărilor prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
-        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Trimiterea notificărilor prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită"
+        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Trimiterea notificărilor prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
+        "SLA_MISSED_FIRST_RESPONSE": "Send email notifications when a conversation misses first response SLA",
+        "SLA_MISSED_NEXT_RESPONSE": "Send email notifications when a conversation misses next response SLA",
+        "SLA_MISSED_RESOLUTION": "Send email notifications when a conversation misses resolution SLA"
       },
       "API": {
         "UPDATE_SUCCESS": "Preferințele de notificare sunt actualizate cu succes",
@@ -98,7 +101,10 @@
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație atribuită",
         "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație participantă",
         "HAS_ENABLED_PUSH": "Ați activat apăsarea pentru acest browser.",
-        "REQUEST_PUSH": "Activează notificările push"
+        "REQUEST_PUSH": "Activează notificările push",
+        "SLA_MISSED_FIRST_RESPONSE": "Send push notifications when a conversation misses first response SLA",
+        "SLA_MISSED_NEXT_RESPONSE": "Send push notifications when a conversation misses next response SLA",
+        "SLA_MISSED_RESOLUTION": "Send push notifications when a conversation misses resolution SLA"
       },
       "PROFILE_IMAGE": {
         "LABEL": "Imagine de profil"
@@ -160,6 +166,9 @@
     "TRIAL_MESSAGE": "zile de încercare rămase.",
     "TRAIL_BUTTON": "Cumpara acum",
     "DELETED_USER": "Utilizator șters",
+    "EMAIL_VERIFICATION_PENDING": "It seems that you haven't verified your email address yet. Please check your inbox for the verification email.",
+    "RESEND_VERIFICATION_MAIL": "Resend verification email",
+    "EMAIL_VERIFICATION_SENT": "Verification email has been sent. Please check your inbox.",
     "ACCOUNT_SUSPENDED": {
       "TITLE": "Cont suspendat",
       "MESSAGE": "Contul tău este suspendat. Vă rugăm să contactați echipa de asistență pentru mai multe informații."
@@ -196,7 +205,9 @@
   "SIDEBAR": {
     "CURRENTLY_VIEWING_ACCOUNT": "În prezent, vizualizarea:",
     "SWITCH": "Comută contul",
+    "INBOX_VIEW": "Inbox View",
     "CONVERSATIONS": "Conversații",
+    "INBOX": "Inbox",
     "ALL_CONVERSATIONS": "Toate conversațiile",
     "MENTIONED_CONVERSATIONS": "Menţionări",
     "PARTICIPATING_CONVERSATIONS": "Participante",
@@ -233,11 +244,14 @@
     "CAMPAIGNS": "Campanii",
     "ONGOING": "În derulare",
     "ONE_OFF": "Unul oprit",
+    "REPORTS_SLA": "SLA",
+    "REPORTS_BOT": "Bot",
     "REPORTS_AGENT": "Agenți",
     "REPORTS_LABEL": "Etichete",
     "REPORTS_INBOX": "Inbox",
     "REPORTS_TEAM": "Echipa",
     "SET_AVAILABILITY_TITLE": "Setați-vă ca",
+    "SLA": "SLA",
     "BETA": "Beta",
     "REPORTS_OVERVIEW": "Prezentare generală",
     "FACEBOOK_REAUTHORIZE": "Conexiunea ta de Facebook a expirat, te rugăm să-ți reconectezi pagina de Facebook pentru a continua serviciile",

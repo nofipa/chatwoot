@@ -83,7 +83,10 @@
         "CONVERSATION_CREATION": "새 대화가 생성될 때 이메일 알림 보내기",
         "CONVERSATION_MENTION": "대화에서 멘션될 때 이메일 알림 보내기",
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "할당된 대화에서 새 메시지가 생성될 때 이메일 알림 보내기",
-        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Send email notifications when a new message is created in a participating conversation"
+        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Send email notifications when a new message is created in a participating conversation",
+        "SLA_MISSED_FIRST_RESPONSE": "Send email notifications when a conversation misses first response SLA",
+        "SLA_MISSED_NEXT_RESPONSE": "Send email notifications when a conversation misses next response SLA",
+        "SLA_MISSED_RESOLUTION": "Send email notifications when a conversation misses resolution SLA"
       },
       "API": {
         "UPDATE_SUCCESS": "알림 기본 설정이 성공적으로 업데이트됨",
@@ -98,7 +101,10 @@
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "할당된 대화에서 새 메시지가 생성될 때 푸시 알림 보내기",
         "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Send push notifications when a new message is created in a participating conversation",
         "HAS_ENABLED_PUSH": "이 브라우저에 대한 푸시를 사용 가능으로 설정하셨습니다.",
-        "REQUEST_PUSH": "푸시 알림 사용"
+        "REQUEST_PUSH": "푸시 알림 사용",
+        "SLA_MISSED_FIRST_RESPONSE": "Send push notifications when a conversation misses first response SLA",
+        "SLA_MISSED_NEXT_RESPONSE": "Send push notifications when a conversation misses next response SLA",
+        "SLA_MISSED_RESOLUTION": "Send push notifications when a conversation misses resolution SLA"
       },
       "PROFILE_IMAGE": {
         "LABEL": "프로필 이미지"
@@ -160,6 +166,9 @@
     "TRIAL_MESSAGE": "일 평가판이 남아 있습니다.",
     "TRAIL_BUTTON": "지금 구입하기",
     "DELETED_USER": "Deleted User",
+    "EMAIL_VERIFICATION_PENDING": "It seems that you haven't verified your email address yet. Please check your inbox for the verification email.",
+    "RESEND_VERIFICATION_MAIL": "Resend verification email",
+    "EMAIL_VERIFICATION_SENT": "Verification email has been sent. Please check your inbox.",
     "ACCOUNT_SUSPENDED": {
       "TITLE": "Account Suspended",
       "MESSAGE": "Your account is suspended. Please reach out to the support team for more information."
@@ -196,7 +205,9 @@
   "SIDEBAR": {
     "CURRENTLY_VIEWING_ACCOUNT": "Currently viewing:",
     "SWITCH": "Switch",
+    "INBOX_VIEW": "Inbox View",
     "CONVERSATIONS": "대화",
+    "INBOX": "받은 메시지함",
     "ALL_CONVERSATIONS": "All Conversations",
     "MENTIONED_CONVERSATIONS": "멘션",
     "PARTICIPATING_CONVERSATIONS": "Participating",
@@ -233,11 +244,14 @@
     "CAMPAIGNS": "Campaigns",
     "ONGOING": "Ongoing",
     "ONE_OFF": "One off",
+    "REPORTS_SLA": "SLA",
+    "REPORTS_BOT": "봇",
     "REPORTS_AGENT": "에이전트",
     "REPORTS_LABEL": "라벨",
     "REPORTS_INBOX": "받은 메시지함",
     "REPORTS_TEAM": "Team",
     "SET_AVAILABILITY_TITLE": "Set yourself as",
+    "SLA": "SLA",
     "BETA": "Beta",
     "REPORTS_OVERVIEW": "Overview",
     "FACEBOOK_REAUTHORIZE": "페이스북 연결이 만료되었습니다. 서비스를 계속하려면 페이스북 페이지를 다시 연결하십시오.",

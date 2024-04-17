@@ -83,7 +83,10 @@
         "CONVERSATION_CREATION": "E-mailberichten verzenden wanneer een nieuw gesprek is gemaakt",
         "CONVERSATION_MENTION": "E-mail notificaties versturen wanneer u in een gesprek wordt genoemd",
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "E-mail notificaties verzenden wanneer een nieuw bericht is gemaakt in een toegewezen gesprek",
-        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "E-mail notificaties verzenden wanneer een nieuw bericht is gemaakt in een deelnemend gesprek"
+        "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "E-mail notificaties verzenden wanneer een nieuw bericht is gemaakt in een deelnemend gesprek",
+        "SLA_MISSED_FIRST_RESPONSE": "Send email notifications when a conversation misses first response SLA",
+        "SLA_MISSED_NEXT_RESPONSE": "Send email notifications when a conversation misses next response SLA",
+        "SLA_MISSED_RESOLUTION": "Send email notifications when a conversation misses resolution SLA"
       },
       "API": {
         "UPDATE_SUCCESS": "Uw notificatie-instellingen zijn succesvol bijgewerkt",
@@ -98,7 +101,10 @@
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Send push notifications when a new message is created in an assigned conversation",
         "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Send push notifications when a new message is created in a participating conversation",
         "HAS_ENABLED_PUSH": "Je hebt pushberichten voor deze browser ingeschakeld.",
-        "REQUEST_PUSH": "Pushberichten inschakelen"
+        "REQUEST_PUSH": "Pushberichten inschakelen",
+        "SLA_MISSED_FIRST_RESPONSE": "Send push notifications when a conversation misses first response SLA",
+        "SLA_MISSED_NEXT_RESPONSE": "Send push notifications when a conversation misses next response SLA",
+        "SLA_MISSED_RESOLUTION": "Send push notifications when a conversation misses resolution SLA"
       },
       "PROFILE_IMAGE": {
         "LABEL": "Profiel afbeelding"
@@ -160,6 +166,9 @@
     "TRIAL_MESSAGE": "dagen proefperiode resterend.",
     "TRAIL_BUTTON": "Nu kopen",
     "DELETED_USER": "Deleted User",
+    "EMAIL_VERIFICATION_PENDING": "It seems that you haven't verified your email address yet. Please check your inbox for the verification email.",
+    "RESEND_VERIFICATION_MAIL": "Resend verification email",
+    "EMAIL_VERIFICATION_SENT": "Verification email has been sent. Please check your inbox.",
     "ACCOUNT_SUSPENDED": {
       "TITLE": "Account Suspended",
       "MESSAGE": "Your account is suspended. Please reach out to the support team for more information."
@@ -196,7 +205,9 @@
   "SIDEBAR": {
     "CURRENTLY_VIEWING_ACCOUNT": "Currently viewing:",
     "SWITCH": "Switch",
+    "INBOX_VIEW": "Inbox View",
     "CONVERSATIONS": "Gesprekken",
+    "INBOX": "Postvak In",
     "ALL_CONVERSATIONS": "Alle gesprekken",
     "MENTIONED_CONVERSATIONS": "Vermeldingen",
     "PARTICIPATING_CONVERSATIONS": "Participating",
@@ -218,7 +229,7 @@
     "LABELS": "Labelen",
     "CUSTOM_ATTRIBUTES": "Aangepaste attributen",
     "AUTOMATION": "Automation",
-    "MACROS": "Macros",
+    "MACROS": "Macro's",
     "TEAMS": "Teams",
     "BILLING": "Billing",
     "CUSTOM_VIEWS_FOLDER": "Folders",
@@ -233,11 +244,14 @@
     "CAMPAIGNS": "Campagnes",
     "ONGOING": "Ongoing",
     "ONE_OFF": "One off",
+    "REPORTS_SLA": "SLA",
+    "REPORTS_BOT": "Bot",
     "REPORTS_AGENT": "Medewerkers",
     "REPORTS_LABEL": "Labelen",
     "REPORTS_INBOX": "Postvak In",
     "REPORTS_TEAM": "Team",
     "SET_AVAILABILITY_TITLE": "Set yourself as",
+    "SLA": "SLA",
     "BETA": "Beta",
     "REPORTS_OVERVIEW": "Overview",
     "FACEBOOK_REAUTHORIZE": "Your Facebook connection has expired, please reconnect your Facebook page to continue services",
