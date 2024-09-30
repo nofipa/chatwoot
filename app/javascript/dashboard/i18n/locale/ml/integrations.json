@@ -4,8 +4,15 @@
     "DESCRIPTION": "Chatwoot integrates with multiple tools and services to improve your team's efficiency. Explore the list below to configure your favorite apps.",
     "LEARN_MORE": "Learn more about integrations",
     "LOADING": "Fetching integrations",
+    "CAPTAIN": {
+      "DISABLED": "Captain is not enabled on your account.",
+      "CLICK_HERE_TO_CONFIGURE": "Click here to configure",
+      "LOADING_CONSOLE": "Loading Captain Console...",
+      "FAILED_TO_LOAD_CONSOLE": "Failed to load Captain Console. Please refresh and try again."
+    },
     "WEBHOOK": {
       "SUBSCRIBED_EVENTS": "Subscribed Events",
+      "LEARN_MORE": "Learn more about webhooks",
       "FORM": {
         "CANCEL": "റദ്ദാക്കുക",
         "DESC": "നിങ്ങളുടെ ചാറ്റ് വൂട്ട് അക്കൗണ്ടിൽ എന്താണ് സംഭവിക്കുന്നതെന്നതിനെക്കുറിച്ചുള്ള തത്സമയ വിവരങ്ങൾ വെബ്‌ഹൂക്ക് ഇവന്റുകൾ നൽകുന്നു. ഒരു കോൾബാക്ക് കോൺഫിഗർ ചെയ്യുന്നതിന് സാധുവായ ഒരു യുആർഎൽ നൽകുക.",

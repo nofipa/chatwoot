@@ -4,20 +4,19 @@ import { mapGetters } from 'vuex';
 import { useUISettings } from 'dashboard/composables/useUISettings';
 import { useAlert } from 'dashboard/composables';
 import { useKeyboardEvents } from 'dashboard/composables/useKeyboardEvents';
+import { useFilter } from 'shared/composables/useFilter';
 import VirtualList from 'vue-virtual-scroll-list';
 
 import ChatListHeader from './ChatListHeader.vue';
 import ConversationAdvancedFilter from './widgets/conversation/ConversationAdvancedFilter.vue';
 import ChatTypeTabs from './widgets/ChatTypeTabs.vue';
 import ConversationItem from './ConversationItem.vue';
-import conversationMixin from '../mixins/conversations';
 import wootConstants from 'dashboard/constants/globals';
 import advancedFilterTypes from './widgets/conversation/advancedFilterItems';
 import filterQueryGenerator from '../helper/filterQueryGenerator.js';
 import AddCustomViews from 'dashboard/routes/dashboard/customviews/AddCustomViews.vue';
 import DeleteCustomViews from 'dashboard/routes/dashboard/customviews/DeleteCustomViews.vue';
 import ConversationBulkActions from './widgets/conversation/conversationBulkActions/Index.vue';
-import filterMixin from 'shared/mixins/filterMixin';
 import languages from 'dashboard/components/widgets/conversation/advancedFilterItems/languages';
 import countries from 'shared/constants/countries';
 import { generateValuesForEditCustomViews } from 'dashboard/helper/customViewsHelper';
@@ -28,6 +27,11 @@ import {
 } from '../store/modules/conversations/helpers/actionHelpers';
 import { CONVERSATION_EVENTS } from '../helper/AnalyticsHelper/events';
 import IntersectionObserver from './IntersectionObserver.vue';
+import {
+  getUserPermissions,
+  filterItemsByPermission,
+} from 'dashboard/helper/permissionsHelper.js';
+import { ASSIGNEE_TYPE_TAB_PERMISSIONS } from 'dashboard/constants/permissions.js';
 
 export default {
   components: {
@@ -42,7 +46,6 @@ export default {
     IntersectionObserver,
     VirtualList,
   },
-  mixins: [conversationMixin, filterMixin],
   provide() {
     return {
       // Actions to be performed on virtual list item and context menu.
@@ -92,6 +95,15 @@ export default {
 
     const conversationListRef = ref(null);
 
+    const {
+      setFilterAttributes,
+      initializeStatusAndAssigneeFilterToModal,
+      initializeInboxTeamAndLabelFilterToModal,
+    } = useFilter({
+      filteri18nKey: 'FILTER',
+      attributeModel: 'conversation_attribute',
+    });
+
     const getKeyboardListenerParams = () => {
       const allConversations = conversationListRef.value.querySelectorAll(
         'div.conversations-list div.conversation'
@@ -110,43 +122,52 @@ export default {
         lastConversationIndex,
       };
     };
-    const handlePreviousConversation = () => {
-      const { allConversations, activeConversationIndex } =
-        getKeyboardListenerParams();
-      if (activeConversationIndex === -1) {
-        allConversations[0].click();
-      }
-      if (activeConversationIndex >= 1) {
-        allConversations[activeConversationIndex - 1].click();
-      }
-    };
-    const handleNextConversation = () => {
+    const handleConversationNavigation = direction => {
       const {
         allConversations,
         activeConversationIndex,
         lastConversationIndex,
       } = getKeyboardListenerParams();
-      if (activeConversationIndex === -1) {
-        allConversations[lastConversationIndex].click();
-      } else if (activeConversationIndex < lastConversationIndex) {
-        allConversations[activeConversationIndex + 1].click();
+
+      // Determine the new index based on the direction
+      const newIndex =
+        direction === 'previous'
+          ? activeConversationIndex - 1
+          : activeConversationIndex + 1;
+
+      // Check if the new index is within the valid range
+      if (
+        allConversations.length > 0 &&
+        newIndex >= 0 &&
+        newIndex <= lastConversationIndex
+      ) {
+        // Click the conversation at the new index
+        allConversations[newIndex].click();
+      } else if (allConversations.length > 0) {
+        // If the new index is out of range, click the first or last conversation based on the direction
+        const fallbackIndex =
+          direction === 'previous' ? 0 : lastConversationIndex;
+        allConversations[fallbackIndex].click();
       }
     };
     const keyboardEvents = {
       'Alt+KeyJ': {
-        action: () => handlePreviousConversation(),
+        action: () => handleConversationNavigation('previous'),
         allowOnFocusedInput: true,
       },
       'Alt+KeyK': {
-        action: () => handleNextConversation(),
+        action: () => handleConversationNavigation('next'),
         allowOnFocusedInput: true,
       },
     };
-    useKeyboardEvents(keyboardEvents, conversationListRef);
+    useKeyboardEvents(keyboardEvents);
 
     return {
       uiSettings,
       conversationListRef,
+      setFilterAttributes,
+      initializeStatusAndAssigneeFilterToModal,
+      initializeInboxTeamAndLabelFilterToModal,
     };
   },
   data() {
@@ -188,6 +209,7 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'getCurrentUser',
+      currentAccountId: 'getCurrentAccountId',
       chatLists: 'getAllConversations',
       mineChatsList: 'getMineChats',
       allChatList: 'getAllStatusChats',
@@ -227,20 +249,19 @@ export default {
         name,
       };
     },
+    userPermissions() {
+      return getUserPermissions(this.currentUser, this.currentAccountId);
+    },
     assigneeTabItems() {
-      const ASSIGNEE_TYPE_TAB_KEYS = {
-        me: 'mineCount',
-        unassigned: 'unAssignedCount',
-        all: 'allCount',
-      };
-      return Object.keys(ASSIGNEE_TYPE_TAB_KEYS).map(key => {
-        const count = this.conversationStats[ASSIGNEE_TYPE_TAB_KEYS[key]] || 0;
-        return {
-          key,
-          name: this.$t(`CHAT_LIST.ASSIGNEE_TYPE_TABS.${key}`),
-          count,
-        };
-      });
+      return filterItemsByPermission(
+        ASSIGNEE_TYPE_TAB_PERMISSIONS,
+        this.userPermissions,
+        item => item.permissions
+      ).map(({ key, count: countKey }) => ({
+        key,
+        name: this.$t(`CHAT_LIST.ASSIGNEE_TYPE_TABS.${key}`),
+        count: this.conversationStats[countKey] || 0,
+      }));
     },
     showAssigneeInConversationCard() {
       return (
@@ -861,6 +882,25 @@ export default {
     onContextMenuToggle(state) {
       this.isContextMenuOpen = state;
     },
+    initializeExistingFilterToModal() {
+      const statusFilter = this.initializeStatusAndAssigneeFilterToModal(
+        this.activeStatus,
+        this.currentUserDetails,
+        this.activeAssigneeTab
+      );
+      if (statusFilter) {
+        this.appliedFilter.push(statusFilter);
+      }
+
+      const otherFilters = this.initializeInboxTeamAndLabelFilterToModal(
+        this.conversationInbox,
+        this.inbox,
+        this.teamId,
+        this.activeTeam,
+        this.label
+      );
+      this.appliedFilter.push(...otherFilters);
+    },
   },
 };
 </script>
@@ -906,7 +946,6 @@ export default {
       v-if="!hasAppliedFiltersOrActiveFolders"
       :items="assigneeTabItems"
       :active-tab="activeAssigneeTab"
-      class="tab--chat-type"
       @chatTabChange="updateAssigneeTab"
     />
 
@@ -993,15 +1032,5 @@ export default {
 <style scoped lang="scss">
 .conversations-list {
   @apply overflow-hidden hover:overflow-y-auto;
-}
-
-.tab--chat-type {
-  @apply py-0 px-4;
-
-  ::v-deep {
-    .tabs {
-      @apply p-0;
-    }
-  }
 }
 </style>
