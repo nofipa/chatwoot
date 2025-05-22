@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-ruby '3.3.3'
+ruby '3.4.4'
 
 ##-- base gems for rails --##
 gem 'rack-cors', '2.0.0', require: 'rack/cors'
-gem 'rails', '~> 7.0.8.4'
+gem 'rails', '~> 7.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
@@ -49,7 +49,7 @@ gem 'aws-sdk-s3', require: false
 # original gem isn't maintained actively
 # we wanted updated version of faraday which is a dependency for slack-ruby-client
 gem 'azure-storage-blob', git: 'https://github.com/chatwoot/azure-storage-ruby', branch: 'chatwoot', require: false
-gem 'google-cloud-storage', require: false
+gem 'google-cloud-storage', '>= 1.48.0', require: false
 gem 'image_processing'
 
 ##-- gems for database --#
@@ -64,7 +64,7 @@ gem 'activerecord-import'
 gem 'dotenv-rails', '>= 3.0.0'
 gem 'foreman'
 gem 'puma'
-gem 'webpacker'
+gem 'vite_rails'
 # metrics on heroku
 gem 'barnes'
 
@@ -94,7 +94,7 @@ gem 'twitty', '~> 0.1.5'
 # facebook client
 gem 'koala'
 # slack client
-gem 'slack-ruby-client', '~> 2.2.0'
+gem 'slack-ruby-client', '~> 2.5.2'
 # for dialogflow integrations
 gem 'google-cloud-dialogflow-v2', '>= 0.24.0'
 gem 'grpc'
@@ -138,9 +138,7 @@ gem 'procore-sift'
 # parse email
 gem 'email_reply_trimmer'
 
-# TODO: we might have to fork this gem since 0.3.1 has hard depency on nokogir 1.10.
-# and this gem hasn't been updated for a while.
-gem 'html2text', git: 'https://github.com/chatwoot/html2text_ruby', branch: 'chatwoot'
+gem 'html2text'
 
 # to calculate working hours
 gem 'working_hours'
@@ -175,12 +173,20 @@ gem 'pgvector'
 # Convert Website HTML to Markdown
 gem 'reverse_markdown'
 
+gem 'iso-639'
+gem 'ruby-openai'
+
+gem 'shopify_api'
+
 ### Gems required only in specific deployment environments ###
 ##############################################################
 
 group :production do
   # we dont want request timing out in development while using byebug
   gem 'rack-timeout'
+  # for heroku autoscaling
+  gem 'judoscale-rails', require: false
+  gem 'judoscale-sidekiq', require: false
 end
 
 group :development do
@@ -204,8 +210,6 @@ group :development do
 end
 
 group :test do
-  # Cypress in rails.
-  gem 'cypress-on-rails'
   # fast cleaning of database
   gem 'database_cleaner'
   # mock http calls
@@ -233,6 +237,7 @@ group :development, :test do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'rubocop-factory_bot', require: false
   gem 'seed_dump'
   gem 'shoulda-matchers'
   gem 'simplecov', '0.17.1', require: false

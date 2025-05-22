@@ -33,12 +33,13 @@ const onClick = () => {
         marginBottom: '2px',
       }"
       :type="inputType"
-      :value="value"
+      :model-value="value"
       readonly
     >
       <template #masked>
         <button
           class="absolute top-1.5 ltr:right-0.5 rtl:left-0.5"
+          type="button"
           @click="toggleMasked"
         >
           <fluent-icon :icon="maskIcon" :size="16" />
@@ -46,7 +47,7 @@ const onClick = () => {
       </template>
     </woot-input>
     <FormButton
-      type="submit"
+      type="button"
       size="large"
       icon="text-copy"
       variant="outline"

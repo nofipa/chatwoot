@@ -3,6 +3,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, url, minLength } from '@vuelidate/validators';
 import wootConstants from 'dashboard/constants/globals';
 import { getI18nKey } from 'dashboard/routes/dashboard/settings/helper/settingsHelper';
+import NextButton from 'dashboard/components-next/button/Button.vue';
 
 const { EXAMPLE_WEBHOOK_URL } = wootConstants;
 
@@ -15,9 +16,14 @@ const SUPPORTED_WEBHOOK_EVENTS = [
   'webwidget_triggered',
   'contact_created',
   'contact_updated',
+  'conversation_typing_on',
+  'conversation_typing_off',
 ];
 
 export default {
+  components: {
+    NextButton,
+  },
   props: {
     value: {
       type: Object,
@@ -32,6 +38,7 @@ export default {
       required: true,
     },
   },
+  emits: ['submit', 'cancel'],
   setup() {
     return { v$: useVuelidate() };
   },
@@ -80,7 +87,7 @@ export default {
       <label :class="{ error: v$.url.$error }">
         {{ $t('INTEGRATION_SETTINGS.WEBHOOK.FORM.END_POINT.LABEL') }}
         <input
-          v-model.trim="url"
+          v-model="url"
           type="text"
           name="url"
           :placeholder="webhookURLInputPlaceholder"
@@ -122,17 +129,19 @@ export default {
     </div>
 
     <div class="flex flex-row justify-end w-full gap-2 px-0 py-2">
-      <div class="w-full">
-        <woot-button
-          :disabled="v$.$invalid || isSubmitting"
-          :is-loading="isSubmitting"
-        >
-          {{ submitLabel }}
-        </woot-button>
-        <woot-button class="button clear" @click.prevent="$emit('cancel')">
-          {{ $t('INTEGRATION_SETTINGS.WEBHOOK.FORM.CANCEL') }}
-        </woot-button>
-      </div>
+      <NextButton
+        faded
+        slate
+        type="reset"
+        :label="$t('INTEGRATION_SETTINGS.WEBHOOK.FORM.CANCEL')"
+        @click.prevent="$emit('cancel')"
+      />
+      <NextButton
+        type="submit"
+        :disabled="v$.$invalid || isSubmitting"
+        :is-loading="isSubmitting"
+        :label="submitLabel"
+      />
     </div>
   </form>
 </template>
