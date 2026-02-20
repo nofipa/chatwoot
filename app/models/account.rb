@@ -28,6 +28,8 @@ class Account < ApplicationRecord
   include Reportable
   include Featurable
   include CacheKeys
+  include CaptainFeaturable
+  include AccountEmailRateLimitable
 
   SETTINGS_PARAMS_SCHEMA = {
     'type': 'object',
@@ -35,7 +37,38 @@ class Account < ApplicationRecord
       {
         'auto_resolve_after': { 'type': %w[integer null], 'minimum': 10, 'maximum': 1_439_856 },
         'auto_resolve_message': { 'type': %w[string null] },
-        'auto_resolve_ignore_waiting': { 'type': %w[boolean null] }
+        'auto_resolve_ignore_waiting': { 'type': %w[boolean null] },
+        'audio_transcriptions': { 'type': %w[boolean null] },
+        'auto_resolve_label': { 'type': %w[string null] },
+        'keep_pending_on_bot_failure': { 'type': %w[boolean null] },
+        'conversation_required_attributes': {
+          'type': %w[array null],
+          'items': { 'type': 'string' }
+        },
+        'captain_models': {
+          'type': %w[object null],
+          'properties': {
+            'editor': { 'type': %w[string null] },
+            'assistant': { 'type': %w[string null] },
+            'copilot': { 'type': %w[string null] },
+            'label_suggestion': { 'type': %w[string null] },
+            'audio_transcription': { 'type': %w[string null] },
+            'help_center_search': { 'type': %w[string null] }
+          },
+          'additionalProperties': false
+        },
+        'captain_features': {
+          'type': %w[object null],
+          'properties': {
+            'editor': { 'type': %w[boolean null] },
+            'assistant': { 'type': %w[boolean null] },
+            'copilot': { 'type': %w[boolean null] },
+            'label_suggestion': { 'type': %w[boolean null] },
+            'audio_transcription': { 'type': %w[boolean null] },
+            'help_center_search': { 'type': %w[boolean null] }
+          },
+          'additionalProperties': false
+        }
       },
     'required': [],
     'additionalProperties': true
@@ -46,6 +79,7 @@ class Account < ApplicationRecord
     check_for_column: false
   }.freeze
 
+  validates :name, presence: true
   validates :domain, length: { maximum: 100 }
   validates_with JsonSchemaValidator,
                  schema: SETTINGS_PARAMS_SCHEMA,
@@ -53,11 +87,16 @@ class Account < ApplicationRecord
 
   store_accessor :settings, :auto_resolve_after, :auto_resolve_message, :auto_resolve_ignore_waiting
 
+  store_accessor :settings, :audio_transcriptions, :auto_resolve_label
+  store_accessor :settings, :captain_models, :captain_features
+  store_accessor :settings, :keep_pending_on_bot_failure
+
   has_many :account_users, dependent: :destroy_async
   has_many :agent_bot_inboxes, dependent: :destroy_async
   has_many :agent_bots, dependent: :destroy_async
   has_many :api_channels, dependent: :destroy_async, class_name: '::Channel::Api'
   has_many :articles, dependent: :destroy_async, class_name: '::Article'
+  has_many :assignment_policies, dependent: :destroy_async
   has_many :automation_rules, dependent: :destroy_async
   has_many :macros, dependent: :destroy_async
   has_many :campaigns, dependent: :destroy_async
@@ -73,6 +112,7 @@ class Account < ApplicationRecord
   has_many :email_channels, dependent: :destroy_async, class_name: '::Channel::Email'
   has_many :facebook_pages, dependent: :destroy_async, class_name: '::Channel::FacebookPage'
   has_many :instagram_channels, dependent: :destroy_async, class_name: '::Channel::Instagram'
+  has_many :tiktok_channels, dependent: :destroy_async, class_name: '::Channel::Tiktok'
   has_many :hooks, dependent: :destroy_async, class_name: 'Integrations::Hook'
   has_many :inboxes, dependent: :destroy_async
   has_many :labels, dependent: :destroy_async
@@ -85,7 +125,6 @@ class Account < ApplicationRecord
   has_many :portals, dependent: :destroy_async, class_name: '::Portal'
   has_many :sms_channels, dependent: :destroy_async, class_name: '::Channel::Sms'
   has_many :teams, dependent: :destroy_async
-  has_many :telegram_bots, dependent: :destroy_async
   has_many :telegram_channels, dependent: :destroy_async, class_name: '::Channel::Telegram'
   has_many :twilio_sms, dependent: :destroy_async, class_name: '::Channel::TwilioSms'
   has_many :twitter_profiles, dependent: :destroy_async, class_name: '::Channel::TwitterProfile'
@@ -97,8 +136,8 @@ class Account < ApplicationRecord
 
   has_one_attached :contacts_export
 
-  enum locale: LANGUAGES_CONFIG.map { |key, val| [val[:iso_639_1_code], key] }.to_h
-  enum status: { active: 0, suspended: 1 }
+  enum :locale, LANGUAGES_CONFIG.map { |key, val| [val[:iso_639_1_code], key] }.to_h, prefix: true
+  enum :status, { active: 0, suspended: 1 }
 
   scope :with_auto_resolve, -> { where("(settings ->> 'auto_resolve_after')::int IS NOT NULL") }
 
