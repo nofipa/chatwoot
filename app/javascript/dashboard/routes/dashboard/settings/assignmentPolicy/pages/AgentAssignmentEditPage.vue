@@ -79,13 +79,15 @@ const breadcrumbItems = computed(() => {
 });
 
 const buildInboxList = allInboxes =>
-  allInboxes?.map(({ name, id, email, phoneNumber, channelType, medium }) => ({
-    name,
-    id,
-    email,
-    phoneNumber,
-    icon: getInboxIconByType(channelType, medium, 'line'),
-  })) || [];
+  allInboxes?.map(
+    ({ name, id, email, phoneNumber, channelType, medium, voiceEnabled }) => ({
+      name,
+      id,
+      email,
+      phoneNumber,
+      icon: getInboxIconByType(channelType, medium, 'line', voiceEnabled),
+    })
+  ) || [];
 
 const policyInboxes = computed(() =>
   buildInboxList(selectedPolicy.value?.inboxes)
@@ -106,6 +108,7 @@ const formData = computed(() => ({
     selectedPolicy.value?.conversationPriority || EARLIEST_CREATED,
   fairDistributionLimit: selectedPolicy.value?.fairDistributionLimit || 100,
   fairDistributionWindow: selectedPolicy.value?.fairDistributionWindow || 3600,
+  excludeOlderThanHours: selectedPolicy.value?.excludeOlderThanHours ?? null,
 }));
 
 const handleDeleteInbox = async inboxId => {
@@ -251,9 +254,12 @@ watch(routeId, fetchPolicyData, { immediate: true });
 </script>
 
 <template>
-  <SettingsLayout :is-loading="uiFlags.isFetchingItem" class="xl:px-44">
+  <SettingsLayout
+    :is-loading="uiFlags.isFetchingItem"
+    class="w-full max-w-2xl ltr:mr-auto rtl:ml-auto"
+  >
     <template #header>
-      <div class="flex items-center gap-2 w-full justify-between">
+      <div class="flex items-center gap-2 w-full justify-between mb-4 min-h-10">
         <Breadcrumb :items="breadcrumbItems" @click="handleBreadcrumbClick" />
       </div>
     </template>
